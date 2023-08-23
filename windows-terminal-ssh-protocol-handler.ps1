@@ -1,8 +1,9 @@
-# Copyright (c) iLand Technology. All rights reserved.
+# Copyright (c) Victor Byrd. All rights reserved.
 # Licensed under the MIT License.
 #
 # SSH Protocol Handler Script for Windows Terminal
 # from Original Script by Victor Byrd
+# Github: https://github.com/vbyrd/windows-terminal-ssh-protocol-handler/
 # 
 # Requires: Windows Terminal
 #   Store Link: https://www.microsoft.com/en-us/p/windows-terminal-preview/9n0dx20hk701
