@@ -1,15 +1,13 @@
-# Copyright (c) Victor Byrd. All rights reserved.
+# Copyright (c) iLand Technology. All rights reserved.
 # Licensed under the MIT License.
 #
 # SSH Protocol Handler Script for Windows Terminal
-# by Victor Byrd
-# Github: https://github.com/vbyrd/windows-terminal-ssh-protocol-handler/
+# from Original Script by Victor Byrd
 # 
 # Requires: Windows Terminal
 #   Store Link: https://www.microsoft.com/en-us/p/windows-terminal-preview/9n0dx20hk701
 # Requires: SSH Client
-#   Option 1: OpenSSH Client - Windows Feature from Windows 10 1809 on
-#       How-to Enable: https://bit.ly/2HIcRDm
+#   Option 1: OpenSSH Client - Windows Feature from Windows 10 1809
 #   Option 2: plink SSH Client (Putty)
 #       Download Link: https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html
 #       Note: plink.exe path must be defined in your PATH environment variable 
@@ -39,12 +37,21 @@ $wtProfile = ''
 $inputURI = $args[0]
 $inputArguments = @{}
 
-if ($inputURI -match '(?<Protocol>\w+)\:\/\/(?:(?<Username>[\w|\@|\.]+)@)?(?<HostAddress>.+)\:(?<Port>\d{2,5})') {
+if ($inputURI -match '(?<Protocol>\w+)\:\/\/(?:(?<Username>[\w|\@|\.]+)@)?(?<HostAddress>.+)') {
     $inputArguments.Add('Protocol', $Matches.Protocol)
     $inputArguments.Add('Username', $Matches.Username) # Optional
-    $inputArguments.Add('Port', $Matches.Port)
-	$rawHost = $Matches.HostAddress
-	
+    if (-not ([string]::IsNullOrEmpty($Matches.Port))) {
+        $inputArguments.Add('Port', $Matches.Port)
+    } else {
+        $inputArguments.Add('Port', 22)
+    }
+
+    $rawHost = $Matches.HostAddress
+
+    if ($rawHost.substring($rawHost.length - 1, 1) -match "/") {
+        $rawHost = $rawHost -replace ".$"
+    }
+
     switch -Regex ($rawHost) {
        '^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$' {
             # Basic test for IP Address 
@@ -135,6 +142,6 @@ if ($wtProfile) {
 $sshCommand = $SSHClient + ' ' + $sshArguments
 $wtArguments += 'new-tab ' + $sshCommand
 
-#Write-Output "Start-Process Command: $windowsTerminal Arguments: $wtArguments"
+Write-Output "Start-Process Command: $windowsTerminal Arguments: $wtArguments"
 
 Start-Process -FilePath $windowsTerminal -ArgumentList $wtArguments

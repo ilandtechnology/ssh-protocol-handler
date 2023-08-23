@@ -7,7 +7,7 @@ Windows Registry Editor Version 5.00
 [HKEY_CURRENT_USER\SOFTWARE\Classes\WTHandler.URLHandler.1\shell\open]
 
 [HKEY_CURRENT_USER\SOFTWARE\Classes\WTHandler.URLHandler.1\shell\open\command]
-@="powershell \"C:\\Users\\<User>\\Documents\\PowerShell\\Scripts\\windows-terminal-ssh-protocol-handler.ps1\" %1"
+@="powershell.exe -ExecutionPolicy bypass -File \"C:\\Windows\\windows-terminal-ssh-protocol-handler.ps1\" %1"
 
 [HKEY_CURRENT_USER\SOFTWARE\WTHandler\Capabilities]
 "ApplicationDescription"="Windows Terminal SSH Protocol Handler"
